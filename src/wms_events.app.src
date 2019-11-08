@@ -1,0 +1,17 @@
+{application, wms_events,
+ [{description, "Event handler for WMS system"},
+  {vsn, git},
+  {registered, []},
+  {mod, {wms_events_app, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    mnesia,
+    wms_cfg
+   ]},
+  {env,[]},
+  {modules, [wms_events, wms_events_actor]},
+
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.
