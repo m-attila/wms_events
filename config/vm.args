@@ -1,0 +1,4 @@
+-name wms_events
+-setcookie wms_events
++K true
++A30
