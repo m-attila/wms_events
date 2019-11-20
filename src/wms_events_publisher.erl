@@ -178,9 +178,18 @@ publish(_, []) ->
   ok;
 publish(Module, [{Timestamp, EventID, TaskInstanceID} | RestSubscribers]) ->
   % notify subscribed task
-  ok = wms_dist:call(Module,
+  case wms_dist:call(Module,
                      notify,
-                     [EventID, TaskInstanceID]),
+                     [EventID, TaskInstanceID]) of
+    ok ->
+      ok;
+    {error, not_found} ->
+      ?warning("~s event was not delivered ~s task instance, because "
+               "it does not exist", [EventID, TaskInstanceID]),
+      ok;
+    Other ->
+      throw(Other)
+  end,
   {ok, _} = wms_db:remove_subscriber(Timestamp,
                                      EventID,
                                      TaskInstanceID),
